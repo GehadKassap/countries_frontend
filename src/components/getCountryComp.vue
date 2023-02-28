@@ -4,6 +4,7 @@
         <div class="col-md-2"></div>
         <div class="col-md-4">
             <div class="mb-3">
+                <!-- Drop Down of All Countries -->
                 <select class="form-select" @change="handleChangeCountry">
                     <option selected>Select Country</option>
                     <option :value="country.country_name" v-for="country in allCountries" :key="country.id">
@@ -14,6 +15,7 @@
         </div>
         <div class="col-md-2"></div>
         <div class="col-md-4">
+             <!-- Drop Down of Phone Status -->
             <div class="mb-3">
                 <select class="form-select" @change="handleChangeByValidNum">
                     <option selected>Valid Phone Numbers</option>
@@ -72,8 +74,8 @@ import axios from "axios";
           return {
            countries :[],
            allCountries : [] ,
-           selectedCountry :'' ,
-           phoneNumberStatus :''
+           selectedCountry : '' ,
+           phoneNumberStatus : ''
 
           };
         },
@@ -94,7 +96,7 @@ import axios from "axios";
                 axios.get("http://127.0.0.1:8000/api/all_countries").
                 then((res) =>{
                 this.allCountries = res.data;
-                console.log(this.allCountries);
+                // console.log(this.allCountries);
                 })
                 .catch((error) => {console.log(error);});
             },
@@ -108,13 +110,14 @@ import axios from "axios";
                 .catch((error) =>{
                     console.log(error);
                 });
-            } , 
+            }, 
             handleChangeByValidNum(e){
                 this.phoneNumberStatus = e.target.value;
                 console.log(this.phoneNumberStatus);
                 axios.get(`http://127.0.0.1:8000/api/get_countries_status?phone_status=${this.phoneNumberStatus}`)
-                .then((res) =>{
-                    console.log(res.data);
+                .then((response) =>{
+                    this.countries = response.data.data; //update countries array list
+                    console.log(response.data);
                 })
                 .catch((err)=>{
                    console.log(err);

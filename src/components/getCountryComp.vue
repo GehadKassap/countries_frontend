@@ -15,7 +15,7 @@
         <div class="col-md-2"></div>
         <div class="col-md-4">
             <div class="mb-3">
-                <select class="form-select" >
+                <select class="form-select" @change="handleChangeByValidNum">
                     <option selected>Valid Phone Numbers</option>
                     <option value="ok">OK</option>
                     <option value="nok">NOK</option>
@@ -34,6 +34,7 @@
                 <th scope="col">Country State</th>
             </tr>
         </thead>
+        <!-- Country Data -->
         <tbody>
             
             <tr v-for="(country, index) in countries" :key="country.id">
@@ -50,6 +51,8 @@
         
         </tbody>
     </table>
+
+    <!-- Pagination Part -->
     <nav aria-label="Page navigation example">
         <ul class="pagination">
             <li class="page-item"><a class="page-link" href="#">Previous</a></li>
@@ -69,7 +72,8 @@ import axios from "axios";
           return {
            countries :[],
            allCountries : [] ,
-           selectedCountry :''
+           selectedCountry :'' ,
+           phoneNumberStatus :''
 
           };
         },
@@ -103,6 +107,17 @@ import axios from "axios";
                 })
                 .catch((error) =>{
                     console.log(error);
+                });
+            } , 
+            handleChangeByValidNum(e){
+                this.phoneNumberStatus = e.target.value;
+                console.log(this.phoneNumberStatus);
+                axios.get(`http://127.0.0.1:8000/api/get_countries_status?phone_status=${this.phoneNumberStatus}`)
+                .then((res) =>{
+                    console.log(res.data);
+                })
+                .catch((err)=>{
+                   console.log(err);
                 });
             }
         },

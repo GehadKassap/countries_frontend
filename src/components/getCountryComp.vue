@@ -49,7 +49,9 @@
                 <td>{{ country.country_code }}</td>
                 <td>{{country.phone_number}}</td>
                 <td> {{ country.phone_status }} </td>
-                <td> <button class="btn btn-info">Edit</button> </td>
+                <td> 
+                    <i class="fas fa-edit"></i>
+                </td>
             </tr>
 
         

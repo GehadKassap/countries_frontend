@@ -19,6 +19,7 @@
 
 <script>
     import axios from "axios";
+    import router from '@/router';
     export default {
         name: "addCountry" , 
         data(){
@@ -57,20 +58,29 @@
                 });
             },
             submitData(){
-                //  this.response =  this.getCountryData();
-                    axios.post('http://127.0.0.1:8000/api/country/save', {
+                this.phoneRegex = new RegExp(this.phoneRegex); //match regex 
+                console.log(this.phoneRegex);
+                if (this.phoneRegex.test(this.phoneNumber)) {
+                  this.countryStatus = "ok";
+                  // console.log('Valid  number');
+                } else {
+                  this.countryStatus = "nok";
+                  // console.log('Invalid number');
+                }
+                axios.post('http://127.0.0.1:8000/api/country/save', {
                     country_name: this.countryName,
                     country_code: this.countryCode ,
                     phone_number: this.phoneNumber,
-                    phone_status: 'ok',
+                    phone_status: this.countryStatus,
                     country_flag: this.countryFlag,
-                  })
-                  .then(response => {
+                })
+                .then(response => {
                     console.log(response.data);
-                  })
-                  .catch(error => {
+                    router.push('/');
+                })
+                .catch(error => {
                     console.log(error);
-                  });
+                });
             }
         },
         created(){

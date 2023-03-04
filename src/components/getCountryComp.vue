@@ -34,6 +34,7 @@
                 <th scope="col">Country Code</th>
                 <th scope="col">Country Phone</th>
                 <th scope="col">Country State</th>
+                <th scope="col">Edit</th>
             </tr>
         </thead>
         <!-- Country Data -->
@@ -48,6 +49,7 @@
                 <td>{{ country.country_code }}</td>
                 <td>{{country.phone_number}}</td>
                 <td> {{ country.phone_status }} </td>
+                <td> <button class="btn btn-info">Edit</button> </td>
             </tr>
 
         

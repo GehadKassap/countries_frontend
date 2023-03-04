@@ -1,7 +1,7 @@
 <template>
   <h1 class="text-center mt-4">Add New Number</h1>
   <form class="my-5"  @submit.prevent="submitData">
-      <select class="form-select" v-model="countryName">
+      <select class="form-select" v-model="countryName" @change="getCountryData">
           <option selected>Select Country</option>
           <option :value="country.country_name" v-for="country in allCountries" :key="country.id">
           {{ country.country_name }}
@@ -50,30 +50,21 @@
                     this.countryInfo = response.data[0]; //update countries array list
                     this.countryFlag = this.countryInfo.flags.png; //get country flag
                     this.countryCode = this.countryInfo.idd.root + this.countryInfo.idd.suffixes[0] ; //get country flag
-                    this.phoneRegex = this.countryInfo.postalCode.regex; //get country phone regex
-                  
-                  // console.log("ana hena w dy el data" , 
-                  //             this.countryName , 
-                  //             this.phoneNumber ,
-                  //             this.countryFlag ,
-                  //             this.countryCode ,
-                  //             this.phoneRegex ,
-                  //   );
-                    
+                    this.phoneRegex = this.countryInfo.postalCode.regex; //get country phone regex          
                 })
                 .catch((error) =>{
                     console.log(error);
                 });
             },
             submitData(){
-                  this.getCountryData();
-                  axios.post('http://127.0.0.1:8000/api/country/save', {
+                //  this.response =  this.getCountryData();
+                    axios.post('http://127.0.0.1:8000/api/country/save', {
                     country_name: this.countryName,
-                    country_code: this.countryFlag ,
+                    country_code: this.countryCode ,
                     phone_number: this.phoneNumber,
                     phone_status: 'ok',
                     country_flag: this.countryFlag,
-                  } , {"Access-Control-Allow-Origin": "*"})
+                  })
                   .then(response => {
                     console.log(response.data);
                   })

@@ -12,7 +12,7 @@
         <input type="text" class="form-control" v-model="phoneNumber">
       </div>
       <div class="my-3">
-        <button type="submit" class="form-control btn btn-info text-light">Add New Phone</button>
+        <button type="submit" class="form-control btn btn-success text-light">Add New Phone</button>
       </div>
   </form>
 </template>
@@ -62,10 +62,8 @@
                 console.log(this.phoneRegex);
                 if (this.phoneRegex.test(this.phoneNumber)) {
                   this.countryStatus = "ok";
-                  // console.log('Valid  number');
                 } else {
                   this.countryStatus = "nok";
-                  // console.log('Invalid number');
                 }
                 axios.post('http://127.0.0.1:8000/api/country/save', {
                     country_name: this.countryName,

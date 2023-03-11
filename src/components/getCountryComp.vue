@@ -4,7 +4,7 @@
         <div class="col-md-4">
             <div class="mb-3">
                 <!-- Drop Down of All Countries -->
-                <select class="form-select" id="countryDropDown" @change="handleChangeCountry">
+                <select class=" js-example-basic-single form-select" id="countryDropDown" @change="handleChangeCountry">
                     <option selected>Select Country</option>
                     <option :value="country.country_name" v-for="country in allCountries"
                             :key="country.id">
@@ -17,10 +17,10 @@
         <div class="col-md-4">
              <!-- Drop Down of Phone Status -->
             <div class="mb-3">
-                <select class="form-select" id="countryStatus" @change="handleChangeByValidNum">
-                    <option selected>Valid Phone Numbers</option>
-                    <option value="ok">OK</option>
-                    <option value="nok">NOK</option>
+                <select class="form-select js-example-basic-single" id="countryStatus" @change="handleChangeByValidNum">
+                    <option selected>Phone number staus</option>
+                    <option value="ok">valid </option>
+                    <option value="nok">invalid </option>
                 </select>
             </div>
         </div>
@@ -51,7 +51,7 @@
                 </td>
                 <td>{{ country.country_code }}</td>
                 <td >{{country.phone_number}}</td>
-                <td> {{ country.phone_status }} </td>
+                <td> {{ country.phone_status == 'ok'? 'Valid' :'Invalid' }} </td>
                 <td class="operation"> 
                     <button  data-bs-toggle="modal" :data-bs-target="'#editCountry-' + index" class="me-2">
                        <i class="fas fa-edit  text-success"></i>
@@ -116,6 +116,7 @@
 
 <script>
     import axios from "axios";
+    // import $ from 'jquery';
     // import router from '@/router';
     export default {
         name : "getCountry",
@@ -192,6 +193,7 @@
             */
             handleChangeCountry(e) {
                 this.selectedCountry= e.target.value;
+                // console.log(this.selectedCountry);
                 axios.get(`http://127.0.0.1:8000/api/get_country?country=${this.selectedCountry}`).
                 then( (response) =>{ 
                     // console.log(response.data.data);
@@ -220,7 +222,7 @@
              * Delete Country from table by its id
             */
             deleteCountry(countryId){
-                console.log(countryId);
+                // console.log(countryId);
                 axios.get(`http://127.0.0.1:8000/api/country/delete?country_id=${countryId}`)
                 .then((response)=>{
                     // console.log(response.data);
@@ -239,12 +241,17 @@
              * to update phone number of country 
             */
             async updateCountry(country,index){
-                // const myModal = document.querySelector(".modal");
+                console.log(country,index);
                 const phoneNumber = document.querySelector(`#phone_number-${index}`).value;
                 const response1 = await fetch(`https://restcountries.com/v3.1/name/${country.country_name}`);
                 const data1 = await response1.json();
-                this.phoneRegex = data1[0].postalCode.regex;
+                // console.log(data1[0].postalCode);
+                this.phoneRegex = data1[0]?.postalCode.regex;
+                // if(data1[0].postalCode == undefined){
+                //     window.alert("something went wrong with regex");
+                // }
                 this.phoneRegex = new RegExp(this.phoneRegex);
+                //  console.log(this.phoneRegex);
                 if (this.phoneRegex.test(country.phone_number)) {
                   country.phone_status = "ok";
                 } else {
@@ -275,20 +282,15 @@
                 document.getElementById('countryDropDown').value = 'Select Country';
                 document.getElementById('countryStatus').value = 'Valid Phone Numbers';
             },
-            // checkPagination(){
-            //     if(
-            //     this.detailedCountries.links[0].label == '&laquo; Previous' ||
-            //     this.detailedCountries.links[this.detailedCountries.links.lenght-1].label == 'Next &raquo;'
-            //     )return false;
-            // },
+
         },
         created(){
             this.getCountries();
             this.getAllCountries();
         },
-        mounted(){
-            // document.querySelector('.js-example-basic-single').select2();
-        },
+        // mounted(){
+        //     //  $('.js-example-basic-single').select2();
+        // },
         // watch: {
         //     currentRoute(to) {
         //     this.currentRoute = to.path;

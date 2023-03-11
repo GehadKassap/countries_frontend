@@ -3,7 +3,7 @@
   <form class="my-5"  @submit.prevent="submitData">
       <div class="my-3">
         <label  class="form-label">Select a Country</label>
-        <select class="form-select select2" v-model="countryName" ref="selectInput" @change="getCountryData">
+        <select class="form-select js-example-basic-single" v-model="countryName" ref="selectInput" @change="getCountryData">
             <option :value="country.country_name" v-for="country in allCountries" :key="country.id">
             {{ country.country_name }}
             </option>
@@ -20,6 +20,7 @@
 </template>
 
 <script>
+    // import $ from 'jquery';
     import axios from "axios";
     import router from '@/router';
     export default {
@@ -86,6 +87,9 @@
         },
         created(){
             this.getAllCountries();
+        },
+        mounted(){
+            //  $('.js-example-basic-single').select2();
         },
     }
 </script>

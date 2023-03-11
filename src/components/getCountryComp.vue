@@ -1,12 +1,13 @@
 <template>
-<!-- Drop; Downs; for filter -->
+<!-- Drop Downs for filter -->
     <div class="row my-5">
         <div class="col-md-4">
             <div class="mb-3">
                 <!-- Drop Down of All Countries -->
                 <select class="form-select" id="countryDropDown" @change="handleChangeCountry">
                     <option selected>Select Country</option>
-                    <option :value="country.country_name" v-for="country in allCountries" :key="country.id">
+                    <option :value="country.country_name" v-for="country in allCountries"
+                            :key="country.id">
                         {{ country.country_name }}
                     </option>
                 </select>
@@ -27,17 +28,17 @@
             <button class="btn btn-success text-light" @click="resetCountry">Reset</button>
         </div>
     </div>
-    <!-- Show; Data; Part -->
+    <!-- Show Data Part -->
     <!-- Main Table -->
     <table class="table table-hover table-bordered table-sm">
         <thead>
             <tr>
-                <th scope="col">#</th>
-                <th scope="col">Country Name</th>
-                <th scope="col">Country Code</th>
-                <th scope="col">Country Phone</th>
-                <th scope="col">Country State</th>
-                <th scope="col">Operation</th>
+                <th class="py-3" scope="col">#</th>
+                <th class="py-3" scope="col">Country Name</th>
+                <th class="py-3" scope="col">Country Code</th>
+                <th class="py-3" scope="col">Country Phone</th>
+                <th class="py-3" scope="col">Country State</th>
+                <th class="py-3" scope="col">Operation</th>
             </tr>
         </thead>
         <!-- Country Data -->
@@ -52,11 +53,11 @@
                 <td >{{country.phone_number}}</td>
                 <td> {{ country.phone_status }} </td>
                 <td class="operation"> 
-                    <button  data-bs-toggle="modal" :data-bs-target="'#editCountry-' + index">
-                       <i class="fas fa-edit me-2"></i>
+                    <button  data-bs-toggle="modal" :data-bs-target="'#editCountry-' + index" class="me-2">
+                       <i class="fas fa-edit  text-success"></i>
                     </button>
-                    <button @click="deleteCountry(country.id)">
-                        <i class="fas fa-trash"></i>
+                    <button @click="deleteCountry(country.id)" > 
+                        <i class="fas fa-trash text-danger"></i>
                     </button>
                            
                 </td>
@@ -72,11 +73,11 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <input :value="country.phone_number" :id="'phone_number-' + index" tabindex="-1">
+                                <input class="form-control" :value="country.phone_number" :id="'phone_number-' + index" tabindex="-1">
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button @click="updateCountry(country,index)" data-bs-dismiss="modal" type="button" class="btn btn-info text-light">update {{country.country_name }}</button>
+                                <button @click="updateCountry(country,index)" data-bs-dismiss="modal" type="button" class="btn btn-success text-light">update {{country.country_name }}</button>
                             </div>
                         </div>
                     </div>
@@ -115,7 +116,7 @@
 
 <script>
     import axios from "axios";
-    import router from '@/router';
+    // import router from '@/router';
     export default {
         name : "getCountry",
         data(){
@@ -164,11 +165,11 @@
                     this.currentPage = response.data.current_page;
                     this.detailedCountries = response.data;
                     // console.log(this.detailedCountries.links);
-                    console.log(this.currentPage);
+                    // console.log(this.currentPage);
                     this.detailedCountries.links= this.detailedCountries.links.slice(1).reverse().slice(1).reverse();
                     // console.log(this.detailedCountries.links);
                     const newUrl = `?page=${pageNumber}`;
-                    // history.pushState({}, '', newUrl);
+                    history.pushState({}, '', newUrl);
                     this.$router.push(newUrl);
                 })
                 .catch(error => {
@@ -226,8 +227,8 @@
                     if(response.data.errors === false && response.data.status === 204){
                         // console.log(countryId);
                         // this.$router.push("/");
-                        router.push('/');
-                        // location.reload();
+                        // router.push('/');
+                        location.reload();
                     }
                 })
                 .catch((err)=>{
@@ -274,23 +275,26 @@
                 document.getElementById('countryDropDown').value = 'Select Country';
                 document.getElementById('countryStatus').value = 'Valid Phone Numbers';
             },
-            checkPagination(){
-                if(
-                this.detailedCountries.links[0].label == '&laquo; Previous' ||
-                this.detailedCountries.links[this.detailedCountries.links.lenght-1].label == 'Next &raquo;'
-                )return false;
-            },
+            // checkPagination(){
+            //     if(
+            //     this.detailedCountries.links[0].label == '&laquo; Previous' ||
+            //     this.detailedCountries.links[this.detailedCountries.links.lenght-1].label == 'Next &raquo;'
+            //     )return false;
+            // },
         },
         created(){
             this.getCountries();
             this.getAllCountries();
         },
-        watch: {
-            currentRoute(to) {
-            this.currentRoute = to.path;
-            window.scrollTop(0,0);
-            }  
-        }
+        mounted(){
+            // document.querySelector('.js-example-basic-single').select2();
+        },
+        // watch: {
+        //     currentRoute(to) {
+        //     this.currentRoute = to.path;
+        //     window.scrollTop(0,0);
+        //     }  
+        // }
     }
 </script>
 

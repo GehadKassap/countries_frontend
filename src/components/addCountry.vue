@@ -1,12 +1,14 @@
 <template>
   <h1 class="text-center mt-4">Add New Number</h1>
   <form class="my-5"  @submit.prevent="submitData">
-      <select class="form-select" v-model="countryName" @change="getCountryData">
-          <option selected>Select Country</option>
-          <option :value="country.country_name" v-for="country in allCountries" :key="country.id">
-          {{ country.country_name }}
-          </option>
-      </select>
+      <div class="my-3">
+        <label  class="form-label">Select a Country</label>
+        <select class="form-select select2" v-model="countryName" ref="selectInput" @change="getCountryData">
+            <option :value="country.country_name" v-for="country in allCountries" :key="country.id">
+            {{ country.country_name }}
+            </option>
+        </select>
+      </div>
       <div class="my-3">
         <label  class="form-label">Phone Number</label>
         <input type="text" class="form-control" v-model="phoneNumber">
@@ -73,6 +75,7 @@
                     country_flag: this.countryFlag,
                 })
                 .then(response => {
+                    
                     console.log(response.data);
                     router.push('/');
                 })

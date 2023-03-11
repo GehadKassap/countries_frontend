@@ -4,6 +4,8 @@ import App from "./App.vue";
 //imported packages
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap";
+import "jquery";
+import "select2";
 import "./assets/main.css";
 
 import { library, dom } from "@fortawesome/fontawesome-svg-core";
